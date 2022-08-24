@@ -13,3 +13,7 @@ type InputReader interface {
 type DataPrinter interface {
 	PrintData(*entities.ConvertingResult) error
 }
+
+type UseCaseConverter interface {
+	Convert(input InputReader) (*entities.ConvertingResult, error)
+}

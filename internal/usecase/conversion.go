@@ -1,22 +1,25 @@
 package usecase
 
-import "github.com/sirupsen/logrus"
+import (
+	"fmt"
+	"github.com/sansaian/coinconv/internal/entities"
+)
 
-func Convert(log *logrus.Logger, converter Converter, input InputReader, output DataPrinter) {
+type UseCase struct {
+	converter Converter
+}
+
+func New(converter Converter) *UseCase {
+	return &UseCase{
+		converter: converter,
+	}
+}
+
+func (u *UseCase) Convert(input InputReader) (*entities.ConvertingResult, error) {
 
 	data, err := input.GetData()
 	if err != nil {
-		log.WithError(err).Errorf("failed to get correct data for convert")
-		return
+		return nil, fmt.Errorf("failed to get correct data for convert %w", err)
 	}
-	result, err := converter.GetConvertingPrice(data)
-	if err != nil {
-		log.WithError(err).Errorf("failed to converted currency")
-		return
-	}
-	err = output.PrintData(result)
-	if err != nil {
-		log.WithError(err).Errorf("failed to print data")
-		return
-	}
+	return u.converter.GetConvertingPrice(data)
 }

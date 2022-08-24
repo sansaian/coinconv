@@ -7,6 +7,7 @@ import (
 
 type Config struct {
 	Loglevel   string
+	Interest   float64
 	CoinMarket *CoinMarket
 }
 
@@ -22,6 +23,7 @@ func NewFromENV() *Config {
 	viper.SetDefault("TIMEOUT", "5s")
 	return &Config{
 		Loglevel: viper.GetString("LOG_LEVEL"),
+		Interest: viper.GetFloat64("INTEREST"),
 		CoinMarket: &CoinMarket{
 			Url:     viper.GetString("URL"),
 			Token:   viper.GetString("TOKEN"),
